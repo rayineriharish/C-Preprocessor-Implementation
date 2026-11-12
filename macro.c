@@ -22,7 +22,6 @@ void macro(char *p, FILE *fd)
 
         while(*q && *q != '\n')
         {
-//            if(i < 255)
             line[i++] = *q;
             q++;
         }
@@ -52,12 +51,11 @@ void macro(char *p, FILE *fd)
                 v = 0;
 
                 // Skip spaces
-                while(*temp == ' ' || *temp == '\t')
+                while(*temp == ' ')
                     temp++;
 
                 // Store macro name
-                while(*temp != ' ' && *temp != '\t' &&
-                      *temp != '\n' && *temp != '\0')
+                while(*temp != ' ' && *temp != '\t' && *temp != '\n' && *temp != '\0')
                 {
                         name[n++] = *temp;
                     temp++;
@@ -109,17 +107,14 @@ void replace(char *p, FILE *fd)
 
     while(*p)
     {
-        // Skip string and character literals
-        if(*p == '"' /*|| *p == '\''*/)
+        // Skip string which are in double inverted commas
+        if(*p == '"' )
         {
             q = *p;
             fputc(*p++, fd);
 
             while(*p && *p != q)
             {
-               // if(*p == '\\' && *(p+1))
-                 //   fputc(*p++, fd);
-
                 fputc(*p++, fd);
             }
 
@@ -127,7 +122,7 @@ void replace(char *p, FILE *fd)
                 fputc(*p++, fd);
         }
 
-        // Check identifier
+        // Check identifier to replace
         else if((*p >= 'A' && *p <= 'Z') ||(*p >= 'a' && *p <= 'z') || *p == '_')
         {
             i = 0;
